@@ -128,14 +128,14 @@ services:
     volumes:
       - kong_data:/var/lib/postgresql/data
 
-  # auth-service:
-  #   build:
-  #     context: ./auth-service
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   networks:
-  #     - kong-net
+  demo-service:
+    build:
+      context: ./demo-service
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - kong-net
 secrets:
   kong_postgres_password:
     file: ./POSTGRES_PASSWORD

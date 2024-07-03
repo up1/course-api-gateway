@@ -95,12 +95,25 @@
 		},
 		{
 			"name": "3. Add plugin to service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"P_SERVICE01\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"custom-auth\",\n    \"config\": {\n        \"url\": \"http://auth-service:3000/login\"\n    }\n}",
+					"raw": "{\n    \"name\": \"file-log\",\n    \"config\": {\n        \"path\": \"/tmp/demo_service_file.log\"\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -124,7 +137,50 @@
 			"response": []
 		},
 		{
-			"name": "4. Testing",
+			"name": "4. Add plugin to route",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"P_ROUTE01\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"file-log\",\n    \"config\": {\n        \"path\": \"/tmp/route01_file.log\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/routes/route01/plugins",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"routes",
+						"route01",
+						"plugins"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Testing",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"host": true
@@ -150,23 +206,55 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/",
+					"raw": "http://localhost:8000/users/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8000",
 					"path": [
-						""
+						"users",
+						"1"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "5. Delete route",
+			"name": "6. Delete plugin from route",
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/routes/route01/plugins/1a58fc78-244a-4962-9d42-40d6d36bb040",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"routes",
+						"route01",
+						"plugins",
+						"1a58fc78-244a-4962-9d42-40d6d36bb040"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. Delete route",
+			"request": {
+				"method": "DELETE",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -178,7 +266,36 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8001/services/demo-service/routes",
+					"raw": "http://localhost:8001/routes/route01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"routes",
+						"route01"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. Delete plugin from service",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/services/demo-service/plugins/{{P_SERVICE01}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -187,14 +304,15 @@
 					"path": [
 						"services",
 						"demo-service",
-						"routes"
+						"plugins",
+						"{{P_SERVICE01}}"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "6. Delete service",
+			"name": "9. Delete service",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -221,6 +339,16 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "P_ROUTE01",
+			"value": ""
+		},
+		{
+			"key": "P_SERVICE01",
+			"value": ""
 		}
 	]
 }

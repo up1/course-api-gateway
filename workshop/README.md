@@ -30,10 +30,10 @@ Access to Kong Manage (UI)
 * Testing
 * Delete route and service
 
-## 3. Start auth service
+## 3. Start demo service
 ```
-$docker compose build auth-service
-$docker compose up -d auth-service
+$docker compose build demo-service
+$docker compose up -d demo-service
 ```
-
-Try step 2 again !!
+Access to demo service
+* http://localhost:3000/data
