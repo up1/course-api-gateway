@@ -70,7 +70,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"route01\",\n    \"hosts\": [\"example.com\"]\n}",
+					"raw": "{\n    \"name\":\"route01\",\n    \"hosts\": [\"example.com\"],\n    \"paths\": [\n    \"/s1\",\n    \"/s2\"\n  ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -206,13 +206,14 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8000/users/1",
+					"raw": "http://localhost:8000/s2/users/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8000",
 					"path": [
+						"s2",
 						"users",
 						"1"
 					]
@@ -235,7 +236,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8001/routes/route01/plugins/1a58fc78-244a-4962-9d42-40d6d36bb040",
+					"raw": "http://localhost:8001/routes/route01/plugins/{{P_ROUTE01}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -245,7 +246,7 @@
 						"routes",
 						"route01",
 						"plugins",
-						"1a58fc78-244a-4962-9d42-40d6d36bb040"
+						"{{P_ROUTE01}}"
 					]
 				}
 			},
