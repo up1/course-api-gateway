@@ -51,10 +51,10 @@ services:
     restart: on-failure
 
   kong:
-    # image: "${KONG_DOCKER_TAG:-kong:latest}"
-    build:
-      context: ./kong
-      dockerfile: Dockerfile
+    image: "${KONG_DOCKER_TAG:-kong:3.7.1-ubuntu}"
+    # build:
+    #   context: ./kong
+    #   dockerfile: Dockerfile
     user: "${KONG_USER:-kong}"
     environment:
       <<: *kong-env
@@ -128,14 +128,14 @@ services:
     volumes:
       - kong_data:/var/lib/postgresql/data
 
-  auth-service:
-    build:
-      context: ./auth-service
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    networks:
-      - kong-net
+  # auth-service:
+  #   build:
+  #     context: ./auth-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - kong-net
 secrets:
   kong_postgres_password:
     file: ./POSTGRES_PASSWORD

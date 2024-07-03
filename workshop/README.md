@@ -7,15 +7,7 @@
 * Database mode => PostgreSQL
 * [Kong UI](https://github.com/Kong/kong-manager)
 
-Start database mode = PostgreSQL
-```
-$docker compose up -d db
-$docker compose ps
-NAME               IMAGE          COMMAND                  SERVICE   CREATED          STATUS                    PORTS
-api-gateway-db-1   postgres:9.5   "docker-entrypoint.s…"   db        33 seconds ago   Up 33 seconds (healthy)   5432/tcp
-```
-
-Start Kong
+Start Kong and Database
 ```
 $docker compose build kong
 $KONG_DATABASE=postgres docker compose --profile database up -d kong
