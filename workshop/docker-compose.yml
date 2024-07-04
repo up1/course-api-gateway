@@ -67,6 +67,8 @@ services:
       KONG_PROXY_ERROR_LOG: /dev/stderr
       KONG_PREFIX: ${KONG_PREFIX:-/var/run/kong}
       KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yaml"
+      KONG_OPENTELEMETRY_TRACING: all
+      KONG_OPENTELEMETRY_TRACING_SAMPLING_RATE: 1.0
     secrets:
       - kong_postgres_password
     networks:
@@ -128,14 +130,14 @@ services:
     volumes:
       - kong_data:/var/lib/postgresql/data
 
-  demo-service:
-    build:
-      context: ./demo-service
-      dockerfile: Dockerfile
-    ports:
-      - "3001:3000"
-    networks:
-      - kong-net
+  # demo-service:
+  #   build:
+  #     context: ./demo-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3001:3000"
+  #   networks:
+  #     - kong-net
   
   collector:
     image: grafana/otel-lgtm:0.6.0
