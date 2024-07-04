@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "2f552b3e-ebcd-4425-8f07-edbdf29a150a",
+		"name": "load-balancer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1453931",
+		"_collection_link": "https://red-firefly-245852.postman.co/workspace/kong-workshop~2ba12dc9-c21b-47fe-8385-eccef8c41781/collection/1453931-2f552b3e-ebcd-4425-8f07-edbdf29a150a?action=share&source=collection_link&creator=1453931"
+	},
+	"item": [
+		{
+			"name": "0. Check kong server",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "HEAD",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"demo-service\",\n    \"url\": \"https://jsonplaceholder.typicode.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1. Create upstream",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"demo_upstream\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/upstreams",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"upstreams"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.1 Create upstream targets",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"target\": \"jsonplaceholder.typicode.com:80\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/upstreams/demo_upstream/targets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"upstreams",
+						"demo_upstream",
+						"targets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.2 Create upstream targets",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"target\": \"dummyjson.com:80\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/upstreams/demo_upstream/targets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"upstreams",
+						"demo_upstream",
+						"targets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Create service",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"demo2-service\",\n    \"host\": \"demo_upstream\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/services",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Create route",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"route02\",\n    \"hosts\": [\"example.com\"],\n    \"paths\": [\n    \"/l1\"\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/services/demo2-service/routes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"services",
+						"demo2-service",
+						"routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Testing",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"host": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Host",
+						"value": "example.com",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/l1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"l1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. Delete route",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"route01\",\n    \"hosts\": [\"example.com\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/routes/route02",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"routes",
+						"route02"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "9. Delete service",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"route01\",\n    \"hosts\": [\"example.com\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/services/demo2-service",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"services",
+						"demo2-service"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "P_ROUTE01",
+			"value": ""
+		},
+		{
+			"key": "P_SERVICE01",
+			"value": ""
+		}
+	]
+}
