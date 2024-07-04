@@ -53,7 +53,7 @@ $docker compose ps
 
 Access to jaeger dashboard :: http://localhost:16686
 
-### Start demo app
+### Start demo app :: [Hot R.O.D. - Rides on Demand](https://github.com/jaegertracing/jaeger/tree/main/examples/hotrod)
 ```
 $docker compose up -d hotrod
 $docker compose ps
