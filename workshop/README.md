@@ -10,7 +10,7 @@
 Start Kong and Database
 ```
 $docker compose build kong
-$KONG_DATABASE=postgres docker compose --profile database up -d kong
+$KONG_DATABASE=postgres docker compose --profile database up -d
 $docker compose ps
 NAME                 IMAGE          COMMAND                  SERVICE   CREATED          STATUS                    PORTS
 api-gateway-db-1     postgres:9.5   "docker-entrypoint.s…"   db        6 minutes ago    Up 6 minutes (healthy)    5432/tcp
