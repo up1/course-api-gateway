@@ -18,14 +18,10 @@ pipeline:
       logs_trace_id_message_key: traceid
       logs_span_id_message_key: spanid
 
-    # - name: elasticsearch
-    #   match: kong_http_log
-    #   host: elasticsearch
-    #   port: 9200
-    #   index: kong-logs
-    #   type: _doc
-    #   tls: off
-    #   logstash_format: on
-    #   logstash_prefix: kong
-    #   logstash_dateformat: '%Y-%m-%dT%H:%M:%S%z'
-    #   logstash_keys: traceid, spanid
+    - name: es
+      match: kong_http_log
+      host: host.docker.internal
+      port: 9200
+      index: kong-logs
+      type: _doc
+      tls: off

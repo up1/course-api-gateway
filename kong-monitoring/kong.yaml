@@ -1,0 +1,127 @@
+_format_version: "3.0"
+plugins:
+- config:
+    content_type: application/json
+    custom_fields_by_lua:
+      spanid: |
+        local h = kong.request.get_header('traceparent')
+        return h:match("%-[a-f0-9]+%-([a-f0-9]+)%-")
+      traceid: |
+        local h = kong.request.get_header('traceparent')
+        return h:match("%-([a-f0-9]+)%-[a-f0-9]+%-")
+    flush_timeout: null
+    headers: null
+    http_endpoint: http://fluentbit:8080
+    keepalive: 60000
+    method: POST
+    queue:
+      initial_retry_delay: 0.01
+      max_batch_size: 1
+      max_bytes: null
+      max_coalescing_delay: 1
+      max_entries: 10000
+      max_retry_delay: 60
+      max_retry_time: 60
+    queue_size: null
+    retry_count: null
+    timeout: 10000
+  enabled: true
+  name: http-log
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+- config:
+    batch_flush_delay: null
+    batch_span_count: null
+    connect_timeout: 1000
+    endpoint: http://otel-collector:4318/v1/traces
+    header_type: preserve
+    headers: null
+    http_response_header_for_traceid: null
+    propagation:
+      clear: null
+      default_format: w3c
+      extract: null
+      inject: null
+    queue:
+      initial_retry_delay: 0.01
+      max_batch_size: 200
+      max_bytes: null
+      max_coalescing_delay: 1
+      max_entries: 10000
+      max_retry_delay: 60
+      max_retry_time: 60
+    read_timeout: 5000
+    resource_attributes:
+      service.name: kong-otel-plugin
+    sampling_rate: null
+    send_timeout: 5000
+  enabled: true
+  name: opentelemetry
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+- config:
+    bandwidth_metrics: true
+    latency_metrics: true
+    per_consumer: true
+    status_code_metrics: true
+    upstream_health_metrics: true
+  enabled: true
+  name: prometheus
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
+services:
+- connect_timeout: 60000
+  enabled: true
+  host: hotrod
+  name: hotrod-svc
+  port: 8080
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: hotrod-route2
+    path_handling: v0
+    paths:
+    - /
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
+- connect_timeout: 60000
+  enabled: true
+  host: jsonplaceholder.typicode.com
+  name: jsonplaceholder-service
+  port: 443
+  protocol: https
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: jsonplaceholder-route
+    path_handling: v0
+    paths:
+    - /s1
+    preserve_host: false
+    protocols:
+    - http
+    - https
+    regex_priority: 0
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+  write_timeout: 60000
