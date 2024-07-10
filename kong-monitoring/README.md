@@ -58,7 +58,7 @@ Access to jaeger dashboard :: http://localhost:16686
 $docker compose up -d hotrod
 $docker compose ps
 ```
-Access to service with url :: http://localhost:8000/s2
+Access to service with url :: http://localhost:8000
 
 ## 6. Start Loki (Logging)
 * Store logs from Kong
